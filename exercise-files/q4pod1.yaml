@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ready-if-service-ready
+  name: ready-if-service-ready
+spec:
+  containers:
+  - image: nginx:1.16.1-alpine
+    name: ready-if-service-ready
+    livenessProbe:
+      exec:
+        command: ["true"]
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      exec:
+        command: ["wget -T2 -O- http://service-am-i-ready:80"]
+      initialDelaySeconds: 15
+      periodSeconds: 20
