@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+        app: webapp
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - image: hackingkubernetes/webapp
+          imagePullPolicy: Always
+          name: webapp
+          env:
+            - name: API_URL
+              value: "http://api"
+          ports:
+            - containerPort: 80
+
